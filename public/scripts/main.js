@@ -1,8 +1,20 @@
 class Main {
     constructor() {
         this.pageViewsKey = 'pageViewsCount';
+        this.clickCount = 'clickCount';
         this.initializeCounter();
+        this.initializeClickCounter();
         this.displayCount();
+        this.displayClickCount();
+
+
+        document.addEventListener("click", (event) => {
+            this.incrementCount();
+            this.displayClickCount();
+            if (event.target.id === "section1_button") {
+                event.target.style.backgroundColor = "red";
+            }
+        });
     }
 
     initializeCounter() {
@@ -11,6 +23,24 @@ class Main {
         }
     }
 
+    initializeClickCounter() {
+        if (!localStorage.getItem(this.clickCount)) {
+            localStorage.setItem(this.clickCount, '0');
+        }    
+    }
+
+    incrementClickCount() {
+        let currentCount = parseInt(localStorage.getItem(this.clickCount));
+        currentCount++;
+        localStorage.setItem(this.clickCount, currentCount.toString());
+    }
+
+    displayClickCount() {
+        this.incrementClickCount();
+
+        document.getElementById('clickCount').innerHTML = 'You have clicked ' + localStorage.getItem(this.clickCount)  + ' times on this page.'
+    }
+    
     incrementCount() {
         let currentCount = parseInt(localStorage.getItem(this.pageViewsKey));
         currentCount++;
